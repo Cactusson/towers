@@ -37,12 +37,13 @@ class Game(tools._State):
         self.monsters = pg.sprite.Group()
         self.ground_tiles = pg.sprite.Group()
         self.tooltip = None  # (tower_button, its base's rect)
-        self.set_ground_tiles()
         self.set_screens()
         self.current_level = None
         self.wave_in_progress = None
         self.selected = None
         self.set_levels()
+        self.bg = self.tile_surface(
+            prepare.SCREEN_SIZE, prepare.GFX['terrain']['ground'])
 
     def set_levels(self):
         """
@@ -90,16 +91,16 @@ class Game(tools._State):
         buttons_list = [('OK', (0, 190), self.action_ok)]
         self.tip_screen = MenuScreen(buttons_list, text_list)
 
-    def set_ground_tiles(self):
+    def tile_surface(self, size, tile):
         """
-        Prepare ground tiles to be drawn.
+        Fill a surface of the given size with a surface tile.
         """
-        ground_image = prepare.GFX['terrain']['ground']
-        for i in range(0, prepare.SCREEN_SIZE[0], 50):
-            for j in range(0, prepare.SCREEN_SIZE[1], 50):
-                ground = pg.sprite.Sprite(self.ground_tiles)
-                ground.image = ground_image
-                ground.rect = ground.image.get_rect(topleft=(i, j))
+        surface = pg.Surface(size).convert()
+        tile_size = tile.get_size()
+        for i in range(0, tile_size[0]+size[0], tile_size[0]):
+            for j in range(0, tile_size[1]+size[1], tile_size[1]):
+                surface.blit(tile, (i, j))
+        return surface
 
     def start_level(self, level_index):
         """
@@ -345,8 +346,7 @@ class Game(tools._State):
         """
         Blit all elements to surface.
         """
-        self.screen.fill(pg.Color('lightblue'))
-        self.ground_tiles.draw(self.screen)
+        self.screen.blit(self.bg, (0, 0))
         self.current_level.draw(self.screen)
         self.foundations.draw(self.screen)
         for tower in self.towers:
