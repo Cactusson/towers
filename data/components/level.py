@@ -48,10 +48,11 @@ class Level():
             rect = image.get_rect(topleft=(x, y))
             self.decorations.append((image, rect))
             if name.endswith('top'):
-                *start, end = name.split('_')
+                words = name.split('_')
+                words.pop()
                 pos = x, y + 64
                 image = prepare.GFX['decor'][
-                    'decor_' + '_'.join(start) + '_bottom']
+                    'decor_' + '_'.join(words) + '_bottom']
                 rect = image.get_rect(topleft=pos)
                 self.decorations.append((image, rect))
 
