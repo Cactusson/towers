@@ -9,15 +9,19 @@ import pygame as pg
 from . import tools
 
 
-SCREEN_SIZE = (800, 600)
 ORIGINAL_CAPTION = "Towers v 1.0"
 
 
 # Initialization
 pg.init()
 os.environ['SDL_VIDEO_CENTERED'] = "TRUE"
-pg.display.set_caption(ORIGINAL_CAPTION)
-SCREEN = pg.display.set_mode(SCREEN_SIZE)
+pg.display.set_caption(ORIGINAL_CAPTION) 
+DISPLAYINFO = pg.display.Info()
+WINDOWWIDTH = DISPLAYINFO.current_w
+WINDOWHEIGHT = DISPLAYINFO.current_h
+SCREEN_SIZE = (WINDOWWIDTH, WINDOWHEIGHT)
+SCREEN = pg.display.set_mode(SCREEN_SIZE, 0)
+FLAGS = SCREEN.get_flags()
 SCREEN_RECT = SCREEN.get_rect()
 
 if getattr(sys, 'frozen', False):
