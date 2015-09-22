@@ -236,13 +236,6 @@ class Game(tools._State):
                     self.pause()
                 elif self.phase == 'pause':
                     self.unpause()
-            elif event.key == pg.K_f:
-                if prepare.FLAGS&pg.FULLSCREEN == False:
-                    prepare.FLAGS|=pg.FULLSCREEN|pg.DOUBLEBUF
-                    pg.display.set_mode(prepare.SCREEN_SIZE, prepare.FLAGS, 0)
-                else:
-                    prepare.FLAGS^=pg.FULLSCREEN|pg.DOUBLEBUF
-                    pg.display.set_mode(prepare.SCREEN_SIZE, prepare.FLAGS, 0)
         elif event.type == pg.MOUSEBUTTONUP:
             if self.phase == 'game':
                 self.click(event.pos)
