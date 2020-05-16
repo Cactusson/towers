@@ -87,10 +87,11 @@ class WinScreen(tools._State):
                     button.action()
                     break
         elif event.type == pg.MOUSEMOTION:
-            if self.hovered_button:
-                if not self.hovered_button.rect.collidepoint(event.pos):
-                    self.hovered_button.change_color(pg.Color('black'))
-                    self.hovered_button = None
+            if self.hovered_button and not self.hovered_button.rect.collidepoint(
+                event.pos
+            ):
+                self.hovered_button.change_color(pg.Color('black'))
+                self.hovered_button = None
             for button in self.buttons:
                 if button.rect.collidepoint(event.pos):
                     self.hovered_button = button

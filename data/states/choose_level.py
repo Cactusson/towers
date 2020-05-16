@@ -105,10 +105,7 @@ class ChooseLevel(tools._State):
 
     def set_levels(self):
         for num in range(TOTAL_LEVELS):
-            if num > self.last_opened_level:
-                status = 'closed'
-            else:
-                status = 'opened'
+            status = 'closed' if num > self.last_opened_level else 'opened'
             level = Level(
                 num+1, self.font, (200 + (num % 5) * 100, 255), status)
             if self.to_select == num:
@@ -143,10 +140,7 @@ class ChooseLevel(tools._State):
         self.levels = pg.sprite.Group()
 
         self.persist = persistant
-        if self.previous == 'INTRO':
-            self.last_opened_level = 0
-            self.to_select = 0
-        elif self.previous == 'GAME':
+        if self.previous == 'GAME':
             move_on = self.persist['move_on']
             level_index = self.persist['level_index']
             if (level_index + 1 > self.last_opened_level and move_on and
@@ -156,6 +150,9 @@ class ChooseLevel(tools._State):
             else:
                 # self.last_opened_level = level_index
                 self.to_select = level_index
+        elif self.previous == 'INTRO':
+            self.last_opened_level = 0
+            self.to_select = 0
         elif self.previous == 'WIN_SCREEN':
             self.to_select = self.last_opened_level
         self.set_levels()
@@ -182,10 +179,11 @@ class ChooseLevel(tools._State):
                         level.change_status('selected')
                         break
         elif event.type == pg.MOUSEMOTION:
-            if self.hovered_button:
-                if not self.hovered_button.rect.collidepoint(event.pos):
-                    self.hovered_button.change_color(self.color_opened)
-                    self.hovered_button = None
+            if self.hovered_button and not self.hovered_button.rect.collidepoint(
+                event.pos
+            ):
+                self.hovered_button.change_color(self.color_opened)
+                self.hovered_button = None
             for button in self.buttons:
                 if button.rect.collidepoint(event.pos):
                     self.hovered_button = button

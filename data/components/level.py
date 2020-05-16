@@ -105,30 +105,29 @@ class Level():
                     point1[1] -= 50
                     direction = 'up'
                     next_image = road_vertical
-                if point1 == point2:
-                    if i < len(self.points) - 2:
-                        next_point = (self.points[i+2][0] - 25,
-                                      self.points[i+2][1] - 25)
-                        if direction == 'right':
-                            if next_point[1] < point2[1]:
-                                next_image = road_bottomright_image
-                            elif next_point[1] > point2[1]:
-                                next_image = road_topright_image
-                        elif direction == 'left':
-                            if next_point[1] < point2[1]:
-                                next_image = road_bottomleft_image
-                            elif next_point[1] > point2[1]:
-                                next_image = road_topleft_image
-                        elif direction == 'down':
-                            if next_point[0] < point2[0]:
-                                next_image = road_bottomright_image
-                            elif next_point[0] > point2[0]:
-                                next_image = road_bottomleft_image
-                        elif direction == 'up':
-                            if next_point[0] < point2[0]:
-                                next_image = road_topright_image
-                            elif next_point[0] > point2[0]:
-                                next_image = road_topleft_image
+                if point1 == point2 and i < len(self.points) - 2:
+                    next_point = (self.points[i+2][0] - 25,
+                                  self.points[i+2][1] - 25)
+                    if direction == 'down':
+                        if next_point[0] < point2[0]:
+                            next_image = road_bottomright_image
+                        elif next_point[0] > point2[0]:
+                            next_image = road_bottomleft_image
+                    elif direction == 'left':
+                        if next_point[1] < point2[1]:
+                            next_image = road_bottomleft_image
+                        elif next_point[1] > point2[1]:
+                            next_image = road_topleft_image
+                    elif direction == 'right':
+                        if next_point[1] < point2[1]:
+                            next_image = road_bottomright_image
+                        elif next_point[1] > point2[1]:
+                            next_image = road_topright_image
+                    elif direction == 'up':
+                        if next_point[0] < point2[0]:
+                            next_image = road_topright_image
+                        elif next_point[0] > point2[0]:
+                            next_image = road_topleft_image
 
     def kickstart(self, game):
         """
@@ -168,6 +167,5 @@ class Level():
         Well, not the best way to do it, I guess, but it works.
 
         """
-        if game.wave_in_progress:
-            if game.wave_in_progress.done:
-                self.next_wave(game)
+        if game.wave_in_progress and game.wave_in_progress.done:
+            self.next_wave(game)

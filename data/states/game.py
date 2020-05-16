@@ -219,7 +219,7 @@ class Game(tools._State):
         When we win the level that's last opened, we move on.
         """
         self.done = False
-        if self.next == 'CHOOSE_LEVEL' or self.next == 'LOST':
+        if self.next in ['CHOOSE_LEVEL', 'LOST']:
             self.persist['level_index'] = self.levels.index(self.current_level)
             self.persist['move_on'] = self.move_on
             self.clear_everything()
@@ -379,7 +379,7 @@ class Game(tools._State):
             self.actual_time = self.current_time - self.time_offset
             if self.subtitle:
                 self.subtitle.update(self)
-        if self.phase == 'game' or self.phase == 'tip':
+        if self.phase in ['game', 'tip']:
             if self.lives <= 0:
                 self.phase = 'lost'
             elif self.current_level.done:

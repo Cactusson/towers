@@ -53,13 +53,14 @@ class Tower(pg.sprite.Sprite):
         Checks if there is any bonus damage.
         """
         # a little ambiguity because bonus_damage is both on support and attack
-        # and means different things there
-        bonus_damage = 0
-        for tower in game.towers:
-            if tower.role == 'support':
-                if (distance(self.rect.center, tower.rect.center) <=
-                        tower.range):
-                    bonus_damage += tower.bonus_damage
+            # and means different things there
+        bonus_damage = sum(
+            tower.bonus_damage
+            for tower in game.towers
+            if tower.role == 'support'
+            and (distance(self.rect.center, tower.rect.center) <= tower.range)
+        )
+
         self.bonus_damage = bonus_damage
         self.actual_damage = self.damage + self.bonus_damage
 
@@ -115,20 +116,21 @@ class Tower(pg.sprite.Sprite):
         """
         Shoots monsters if any are near and cooldown is off.
         """
-        if self.role == 'attack':
-            self.check_damage(game)
-            now = game.actual_time
-            if self.ready:
-                for monster in game.monsters:
-                    if (distance(monster.rect.center, self.rect.center) <
-                            self.range):
-                        game.bullets.add(Bullet(self, monster))
-                        self.ready = False
-                        self.timer = now
-                        break
-            else:
-                if now - self.timer > self.cooldown:
-                    self.ready = True
+        if self.role != 'attack':
+            return
+        self.check_damage(game)
+        now = game.actual_time
+        if self.ready:
+            for monster in game.monsters:
+                if (distance(monster.rect.center, self.rect.center) <
+                        self.range):
+                    game.bullets.add(Bullet(self, monster))
+                    self.ready = False
+                    self.timer = now
+                    break
+        else:
+            if now - self.timer > self.cooldown:
+                self.ready = True
 
     def draw(self, surface, game):
         """

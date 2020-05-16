@@ -36,8 +36,8 @@ class Monster(pg.sprite.Sprite):
         """
         Check if slowed.
         """
-        now = game.actual_time
         if 'slowed' in self.status:
+            now = game.actual_time
             if now - self.slow_timer > self.slow_duration:
                 self.bonus_speed = 0
                 self.status.remove('slowed')

@@ -62,22 +62,21 @@ class Wave():
         The main phase: spawning monsters and waiting for them to die or
         reach to the end (actually they still die there as well).
         """
-        if self.monsters:
-            if self.spawning:
-                if self.ready_to_spawn:
-                    self.spawn_monster(game)
-                    self.ready_to_spawn = False
-                    if not self.monsters:
-                        self.spawning = False
-                    else:
-                        self.timer_spawn = now
+        if self.monsters and self.spawning:
+            if self.ready_to_spawn:
+                self.spawn_monster(game)
+                self.ready_to_spawn = False
+                if not self.monsters:
+                    self.spawning = False
                 else:
-                    if now - self.timer_spawn > self.delay_spawn:
-                        self.ready_to_spawn = True
+                    self.timer_spawn = now
+            else:
+                if now - self.timer_spawn > self.delay_spawn:
+                    self.ready_to_spawn = True
 
         self.alive_monsters = [monster for monster in self.alive_monsters
                                if monster.alive()]
-        if not self.monsters and not self.alive_monsters:
+        if not (self.monsters or self.alive_monsters):
             self.phase = 'post'
             self.timer_post = now
 

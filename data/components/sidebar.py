@@ -294,14 +294,13 @@ class Sidebar():
         self.monster_speed_rect = self.monster_speed.get_rect(
             topleft=pos)
 
-        if real:
-            if monster.bonus_speed:
-                pos[0] += self.monster_speed_rect.width
-                bonus_speed = ' {}'.format((str(monster.bonus_speed)))
-                self.monster_bonus_speed = self.font_15.render(
-                    bonus_speed, True, pg.Color('darkred'))
-                self.monster_bonus_speed_rect = \
-                    self.monster_bonus_speed.get_rect(topleft=pos)
+        if real and monster.bonus_speed:
+            pos[0] += self.monster_speed_rect.width
+            bonus_speed = ' {}'.format((str(monster.bonus_speed)))
+            self.monster_bonus_speed = self.font_15.render(
+                bonus_speed, True, pg.Color('darkred'))
+            self.monster_bonus_speed_rect = \
+                self.monster_bonus_speed.get_rect(topleft=pos)
 
         self.selected_monster_real = real
 
@@ -374,7 +373,6 @@ class Sidebar():
             screen.blit(
                 self.monster_speed_image, self.monster_speed_image_rect)
             screen.blit(self.monster_speed, self.monster_speed_rect)
-            if self.selected_monster_real:
-                if self.selected_monster.bonus_speed:
-                    screen.blit(self.monster_bonus_speed,
-                                self.monster_bonus_speed_rect)
+            if self.selected_monster_real and self.selected_monster.bonus_speed:
+                screen.blit(self.monster_bonus_speed,
+                            self.monster_bonus_speed_rect)

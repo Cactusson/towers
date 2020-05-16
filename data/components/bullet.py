@@ -58,11 +58,11 @@ class Bullet(pg.sprite.Sprite):
         else:
             if self.target.rect.centerx <= self.rect.centerx:
                 dx = -self.speed
-            elif self.target.rect.centerx > self.rect.centerx:
+            else:
                 dx = self.speed
             if self.target.rect.centery <= self.rect.centery:
                 dy = -self.speed
-            elif self.target.rect.centery > self.rect.centery:
+            else:
                 dy = self.speed
             if (abs(self.target.rect.centerx - self.rect.centerx) <
                     abs(self.target.rect.centery - self.rect.centery)):

@@ -25,6 +25,9 @@ class TowerButton(pg.sprite.Sprite):
             self.tower_attack_image = prepare.GFX['icons']['tower_damage']
             self.tower_cooldown_image = prepare.GFX['icons']['tower_cooldown']
             self.tower_price_image = prepare.GFX['icons']['tower_price']
+        elif self.role == 'sell':
+            self.tower = kwargs['tower']
+            self.game = kwargs['game']
         elif self.role == 'show':
             self.foundation = kwargs['foundation']
             self.kinds = kwargs['kinds']
@@ -34,11 +37,6 @@ class TowerButton(pg.sprite.Sprite):
             self.tower_attack_image = prepare.GFX['icons']['tower_damage']
             self.tower_cooldown_image = prepare.GFX['icons']['tower_cooldown']
             self.tower_price_image = prepare.GFX['icons']['tower_price']
-        elif self.role == 'sell':
-            self.tower = kwargs['tower']
-            self.game = kwargs['game']
-        elif self.role == 'locked':
-            pass
 
     def do_action(self, game):
         """
@@ -123,10 +121,7 @@ class TowerButton(pg.sprite.Sprite):
         center_pos[0] += price_image_rect.width + 3
 
         price = str(tower['price'][level])
-        if game.gold >= int(price):
-            color = pg.Color('black')
-        else:
-            color = pg.Color('red')
+        color = pg.Color('black') if game.gold >= int(price) else pg.Color('red')
         text_price = self.font.render(price, True, color)
         text_price_rect = text_price.get_rect(center=center_pos)
         text.append((text_price, text_price_rect))
@@ -136,12 +131,9 @@ class TowerButton(pg.sprite.Sprite):
         """
         Returns tooltip_rect + text from self.render_text.
         """
-        if not (self.role == 'build' or self.role == 'upgrade'):
+        if self.role not in ['build', 'upgrade']:
             return None
-        if self.role == 'build':
-            rect = self.foundation.rect
-        elif self.role == 'upgrade':
-            rect = self.tower.rect
+        rect = self.foundation.rect if self.role == 'build' else self.tower.rect
         width, height = 170, 120
         if rect.top > 270:
             x, y = rect.left - 65, rect.top - 50 - height
